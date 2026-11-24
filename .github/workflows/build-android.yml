@@ -1,0 +1,41 @@
+name: Build Focuz Android APK
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'android/**'
+      - 'MamHabit/Assets.xcassets/**'
+      - 'MamHabit/Sounds/**'
+      - 'scripts/build-apk.sh'
+      - '.github/workflows/build-android.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'android/**'
+      - 'MamHabit/Assets.xcassets/**'
+      - 'MamHabit/Sounds/**'
+      - 'scripts/build-apk.sh'
+      - '.github/workflows/build-android.yml'
+permissions:
+  contents: read
+concurrency:
+  group: focuz-android-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and verify Android APK
+        env:
+          FOCUZ_ANDROID_SIGNING_DIR: ${{ runner.temp }}/focuz-ci-signing
+        run: |
+          export JAVA_HOME="${JAVA_HOME_17_X64:?JDK 17 is required}"
+          bash scripts/build-apk.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Focuz-Android-CI-APK
+          path: dist/*.apk
+          if-no-files-found: error
+          retention-days: 14

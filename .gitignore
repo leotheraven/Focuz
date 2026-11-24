@@ -1,0 +1,30 @@
+# macOS
+.DS_Store
+.AppleDouble
+
+# Xcode output and local settings
+build/
+simbuild/
+dist/
+DerivedData/
+*.xcarchive
+*.ipa
+*.dSYM/
+*.dSYM.zip
+xcuserdata/
+*.xcuserstate
+*.xccheckout
+*.xcscmblueprint
+*.hmap
+*.moved-aside
+*.xcuserdatad/
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# Local logs and secrets
+*.log
+.env
+.env.*
+!.env.example
